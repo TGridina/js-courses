@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        const daysInYear = 364;
+        let lastName = getName("Введите Вашу фамилию:");
+        let firstName = getName("Введите Ваше имя:");
+        let surName = getName("Введите Ваше отчество:");
+        let age = getAge();
+        let isMale = confirm("Ваш пол - мужской?");
+        let isRetired = isRetirementAge(age, isMale);
+
+        alert(`Ваше ФИО: ${lastName} ${firstName} ${surName}
+Ваш возраст в годах: ${age}
+Ваш возраст в днях: ${age * daysInYear}
+Через 5 лет вам будет: ${age + 5}
+Ваш пол: ${isMale ? "мужской" : "женский"}
+Вы на пенсии: ${isRetired ? "да": "нет"}`);
+
+        function getName(message) {
+            let name = "";
+            do {
+                name = prompt(message);
+            }
+            while (name === null || name.trim().length === 0)
+
+            return name;
+        }
+
+        function getAge() {
+            let age;
+            do {
+                age = Number(prompt("Введите ваш возраст:"));
+            }
+            while (isNaN(age) || age <= 0 || age % 1 != 0)
+
+            return age;
+        }
+
+        function isRetirementAge(age, isMale) {
+            const femaleRetirementAge = 55;
+            const maleRetirementAge = 60;
+            let retirementAge = isMale ? maleRetirementAge : femaleRetirementAge;
+            return age >= retirementAge ? true : false;
+        }
+    </script>
+</body>
+</html>
