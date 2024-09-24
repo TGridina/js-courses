@@ -3,19 +3,19 @@
 <body>
     <script>
         const daysInYear = 364;
-        let lastName = getName("Введите Вашу фамилию:");
-        let firstName = getName("Введите Ваше имя:");
-        let surName = getName("Введите Ваше отчество:");
+        let lastName = getName("Р’РІРµРґРёС‚Рµ Р’Р°С€Сѓ С„Р°РјРёР»РёСЋ:");
+        let firstName = getName("Г‚ГўГҐГ¤ГЁГІГҐ Г‚Г ГёГҐ ГЁГ¬Гї:");
+        let surName = getName("Г‚ГўГҐГ¤ГЁГІГҐ Г‚Г ГёГҐ Г®ГІГ·ГҐГ±ГІГўГ®:");
         let age = getAge();
-        let isMale = confirm("Ваш пол - мужской?");
+        let isMale = confirm("Г‚Г Гё ГЇГ®Г« - Г¬ГіГ¦Г±ГЄГ®Г©?");
         let isRetired = isRetirementAge(age, isMale);
 
-        alert(`Ваше ФИО: ${lastName} ${firstName} ${surName}
-Ваш возраст в годах: ${age}
-Ваш возраст в днях: ${age * daysInYear}
-Через 5 лет вам будет: ${age + 5}
-Ваш пол: ${isMale ? "мужской" : "женский"}
-Вы на пенсии: ${isRetired ? "да": "нет"}`);
+        alert(`Г‚Г ГёГҐ Г”Г€ГЋ: ${lastName} ${firstName} ${surName}
+Г‚Г Гё ГўГ®Г§Г°Г Г±ГІ Гў ГЈГ®Г¤Г Гµ: ${age}
+Г‚Г Гё ГўГ®Г§Г°Г Г±ГІ Гў Г¤Г­ГїГµ: ${age * daysInYear}
+Г—ГҐГ°ГҐГ§ 5 Г«ГҐГІ ГўГ Г¬ ГЎГіГ¤ГҐГІ: ${age + 5}
+Г‚Г Гё ГЇГ®Г«: ${isMale ? "Г¬ГіГ¦Г±ГЄГ®Г©" : "Г¦ГҐГ­Г±ГЄГЁГ©"}
+Г‚Г» Г­Г  ГЇГҐГ­Г±ГЁГЁ: ${isRetired ? "Г¤Г ": "Г­ГҐГІ"}`);
 
         function getName(message) {
             let name = "";
@@ -30,7 +30,7 @@
         function getAge() {
             let age;
             do {
-                age = Number(prompt("Введите ваш возраст:"));
+                age = Number(prompt("Г‚ГўГҐГ¤ГЁГІГҐ ГўГ Гё ГўГ®Г§Г°Г Г±ГІ:"));
             }
             while (isNaN(age) || age <= 0 || age % 1 != 0)
 
