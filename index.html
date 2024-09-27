@@ -17,30 +17,22 @@
                 return "";
             }
 
-            let startIndexFound = false;
-            let startIndex = 0;
+            let startIndex = NaN;
             for (var i = 0; i < stringToTrim.length; i++) {
                 if (stringToTrim[i] !== ' ') {
                     startIndex = i;
-                    startIndexFound = true;
-                }
-                if (startIndexFound) {
                     break;
                 }
             }
 
-            if (!startIndexFound) {
+            if (isNaN(startIndex)) {
                 return "";
             }
 
-            let endIndexFound = false;
             let endIndex = stringToTrim.length;
             for (i = stringToTrim.length - 1; i >= 0; i--) {
                 if (stringToTrim[i] !== ' ') {
                     endIndex = i + 1;
-                    endIndexFound = true;
-                }
-                if (endIndexFound) {
                     break;
                 }
             }
