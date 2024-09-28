@@ -13,7 +13,7 @@
         alert(`*${result}*`);
 
         function trimStr(stringToTrim) {
-            if (stringToTrim === null || stringToTrim.length === 0) {
+            if (!stringToTrim) {
                 return "";
             }
 
@@ -35,6 +35,11 @@
                     endIndex = i + 1;
                     break;
                 }
+            }
+
+            if (startIndex === 0 && endIndex === stringToTrim.length) {
+                console.log(`startIndex: ${startIndex}, endIndex: ${endIndex}, input string length: ${stringToTrim.length}`);
+                return stringToTrim;
             }
 
             return stringToTrim.substring(startIndex, endIndex);
