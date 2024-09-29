@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        const arr = [5, 7, [4, [2], 8, [1, 3], 2], [9, []], 1, 8];
+        console.log(treeSum(arr));
+
+        function treeSum(array) {
+            var sum = 0;
+            for (var i = 0; i < array.length; i++) {
+                if (typeof array[i] == "number") {
+                    sum += array[i];
+                } else if (array[i] instanceof Array) {
+                    sum += treeSum(array[i]);
+                }
+            }
+            return sum;
+        }
+    </script>
+</body>
+</html>
