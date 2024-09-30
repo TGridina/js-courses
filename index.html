@@ -13,7 +13,7 @@
             if (!inputString)
                 return false;
 
-            let checkString = inputString.replaceAll(/[^0-9a-zà-ùý-ÿû¸]/gi, '').toLowerCase();
+            let checkString = inputString.replaceAll(/[^0-9a-zÐ°-Ñ‰Ñ-ÑÑ‹Ñ‘]/gi, '').toLowerCase();
 
             let reverseString = '';
             for (let i = checkString.length - 1; i >= 0; i--) {
