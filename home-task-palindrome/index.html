@@ -14,14 +14,17 @@
                 return false;
 
             let checkString = inputString.replaceAll(/[^0-9a-zà-ùý-ÿû¸]/gi, '').toLowerCase();
+            console.log(checkString);
 
             let reverseString = '';
             for (let i = checkString.length - 1; i >= 0; i--) {
                 reverseString += checkString[i];
             }
+            console.log(reverseString);
 
             return checkString === reverseString;
         }
+
     </script>
 </body>
 </html>
