@@ -2,47 +2,19 @@
 <html>
 <body>
     <script>
-        let str = prompt("Enter string:");
-        while (str === null) {
-            str = prompt("String is not entered. Please, enter string again:");
-        }
+        let arr = [5, 7, [4, [2], 8, [1, 3], 2], [9, []], 1, 8];
+        console.log(`tree sum = ${treeSum(arr)}`);
 
-        let result = trimStr(str);
-        alert(`*${result}*`);
-
-        function trimStr(stringToTrim) {
-            if (!stringToTrim) {
-                console.log("input string is empty");
-                return "";
-            }
-
-            let startIndex;
-            for (var i = 0; i < stringToTrim.length; i++) {
-                if (stringToTrim[i] !== ' ') {
-                    startIndex = i;
-                    break;
+        function treeSum(array) {
+            var sum = 0;
+            for (var i = 0; i < array.length; i++) {
+                if (typeof array[i] == "number") {
+                    sum += array[i];
+                } else if (array[i] instanceof Array) {
+                    sum += treeSum(array[i]);
                 }
             }
-
-            if (startIndex === undefined) {
-                console.log("input string contains spaces only");
-                return "";
-            }
-
-            let endIndex = stringToTrim.length;
-            for (i = stringToTrim.length - 1; i >= 0; i--) {
-                if (stringToTrim[i] !== ' ') {
-                    endIndex = i + 1;
-                    break;
-                }
-            }
-
-            if (startIndex === 0 && endIndex === stringToTrim.length) {
-                console.log("there are no spaces in the start and in the end of input string");
-                return stringToTrim;
-            }
-
-            return stringToTrim.substring(startIndex, endIndex);
+            return sum;
         }
     </script>
 </body>
