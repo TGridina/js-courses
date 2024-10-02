@@ -13,7 +13,7 @@
             if (!inputString)
                 return true;
 
-            let checkString = inputString.replaceAll(/[^a-z‡-˘˝-ˇ˚∏]/gi, '').toLowerCase().replaceAll("∏", "Â");;
+            let checkString = inputString.replaceAll(/[^a-z–∞-—â—ç-—è—ã—ë]/gi, '').toLowerCase().replaceAll("—ë", "–µ");
 
             var lastIndex = checkString.length - 1;
             for (let i = 0; i < checkString.length / 2; i++) {
