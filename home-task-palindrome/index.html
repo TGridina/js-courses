@@ -13,18 +13,16 @@
             if (!inputString)
                 return false;
 
-            let checkString = inputString.replaceAll(/[^0-9a-zà-ùý-ÿû¸]/gi, '').toLowerCase();
-            console.log(checkString);
+            let checkString = inputString.replaceAll(/[^0-9a-zà-ùý-ÿû¸]/gi, '').toLowerCase().replaceAll("¸", "å");;
 
-            let reverseString = '';
-            for (let i = checkString.length - 1; i >= 0; i--) {
-                reverseString += checkString[i];
+            var lastIndex = checkString.length - 1;
+            for (let i = 0; i < checkString.length / 2; i++) {
+                if (checkString[i] !== checkString[lastIndex - i])
+                    return false;
             }
-            console.log(reverseString);
 
-            return checkString === reverseString;
+            return true;
         }
-
     </script>
 </body>
 </html>
