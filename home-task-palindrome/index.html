@@ -7,17 +7,19 @@
             str = prompt("String is not entered. Please, enter string again:");
         }
 
-        alert(`${isPalindrome(str) ? "This is palindrome" : "This is not polydrome"}`);
+        alert(`${isPalindrome(str) ? "This is palindrome" : "This is not palindrome"}`);
 
         function isPalindrome(inputString) {
             if (!inputString)
                 return true;
 
             let checkString = inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");
+            console.log(`check stRing lenght: ${checkString.length}`);
 
             var lastIndex = checkString.length - 1;
-            for (let i = 0; i < checkString.length / 2; i++) {
-                if (i !== lastIndex - i && checkString[i] !== checkString[lastIndex - i])
+            for (let i = 0; i < lastIndex / 2; i++) {
+                console.log(`iteration number: ${i + 1}`)
+                if (checkString[i] !== checkString[lastIndex - i])
                     return false;
             }
 
