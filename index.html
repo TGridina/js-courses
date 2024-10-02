@@ -15,12 +15,13 @@
 
             let checkString = inputString.replaceAll(/[^0-9a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");;
 
-            let reverseString = '';
-            for (let i = checkString.length - 1; i >= 0; i--) {
-                reverseString += checkString[i];
+            var lastIndex = checkString.length - 1;
+            for (let i = 0; i < checkString.length / 2; i++) {
+                if (checkString[i] !== checkString[lastIndex - i])
+                    return false;
             }
 
-            return checkString === reverseString;
+            return true;
         }
     </script>
 </body>
