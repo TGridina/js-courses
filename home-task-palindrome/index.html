@@ -11,13 +11,13 @@
 
         function isPalindrome(inputString) {
             if (!inputString)
-                return false;
+                return true;
 
-            let checkString = inputString.replaceAll(/[^0-9a-zà-ùý-ÿû¸]/gi, '').toLowerCase().replaceAll("¸", "å");;
+            let checkString = inputString.replaceAll(/[^a-zà-ùý-ÿû¸]/gi, '').toLowerCase().replaceAll("¸", "å");;
 
             var lastIndex = checkString.length - 1;
             for (let i = 0; i < checkString.length / 2; i++) {
-                if (checkString[i] !== checkString[lastIndex - i])
+                if (i !== lastIndex - i && checkString[i] !== checkString[lastIndex - i])
                     return false;
             }
 
