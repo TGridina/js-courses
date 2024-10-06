@@ -7,21 +7,21 @@
             str = prompt("String is not entered. Please, enter string again:");
         }
 
-        alert(getCheckResult(str));
+        alert(`${isPalindrome(str) ? "This is palindrome" : "This is not palindrome"}`);
 
-        function getCheckResult(inputString) {
-            let clearString = inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е")
+        function isPalindrome(inputString) {
+            let clearString = inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");
             console.log(`clear string ${clearString}`)
 
-            return `${isPalindrome(clearString) ? "This is palindrome" : "This is not palindrome"}`;
+            return isClearStringPalindrome(clearString);
 
-            function isPalindrome(string) {
+            function isClearStringPalindrome(string) {
                 console.log(`string ${string}`)
                 if (string.length === 0 || string.length === 1)
                     return true;
 
                 if (string[0] === string[string.length - 1])
-                    return isPalindrome(string.substring(1, string.length - 1));
+                    return isClearStringPalindrome(string.substring(1, string.length - 1));
 
                 return false;
             }
