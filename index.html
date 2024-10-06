@@ -2,29 +2,28 @@
 <html>
 <body>
     <script>
-        let str = prompt("Enter string:");
+        "use strict"
+
+        let str = prompt("Введите строку:");
         while (str === null) {
-            str = prompt("String is not entered. Please, enter string again:");
+            str = prompt("Строка не введена. Пожалуйста, введите строку еще раз:");
         }
 
-        alert(`${isPalindrome(str) ? "This is palindrome" : "This is not palindrome"}`);
+        alert(`Количество гласных букв: ${countVowels(str)}`);
 
-        function isPalindrome(inputString) {
-            let clearString = inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");
-            console.log(`clear string ${clearString}`)
+        function countVowels (inputString) {
+            const vowels = "ауоиэыяюеё";
+            let count = 0
 
-            return isClearStringPalindrome(clearString);
-
-            function isClearStringPalindrome(string) {
-                console.log(`string ${string}`)
-                if (string.length === 0 || string.length === 1)
-                    return true;
-
-                if (string[0] === string[string.length - 1])
-                    return isClearStringPalindrome(string.substring(1, string.length - 1));
-
-                return false;
+            if (inputString) {
+                for (let i = 0; i < inputString.length; i++)
+                {
+                    if (vowels.indexOf(inputString[i].toLowerCase()) !== -1)
+                        count++;
+                }
             }
+
+            return count;
         }
     </script>
 </body>
