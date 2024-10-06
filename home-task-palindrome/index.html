@@ -26,24 +26,29 @@
             return true;
         }
 
-        //const clearString = (inputString) => inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");
-
         //let str = prompt("Enter string:");
         //while (str === null) {
         //    str = prompt("String is not entered. Please, enter string again:");
         //}
 
-        //alert(`${isPalindrome(clearString(str)) ? "This is palindrome" : "This is not palindrome"}`);
+        //alert(`${isPalindrome(str) ? "This is palindrome" : "This is not palindrome"}`);
 
         //function isPalindrome(inputString) {
-        //    console.log(inputString);
-        //    if (inputString.length === 0 || inputString.length === 1)
-        //        return true;
+        //    let clearString = inputString.replaceAll(/[^a-zа-щэ-яыё]/gi, '').toLowerCase().replaceAll("ё", "е");
+        //    console.log(`clear string ${clearString}`)
 
-        //    if (inputString[0] === inputString[inputString.length - 1])
-        //        return isPalindrome(inputString.substring(1, inputString.length - 1));
+        //    return isClearStringPalindrome(clearString);
 
-        //    return false;
+        //    function isClearStringPalindrome(string) {
+        //        console.log(`string ${string}`)
+        //        if (string.length === 0 || string.length === 1)
+        //            return true;
+
+        //        if (string[0] === string[string.length - 1])
+        //            return isClearStringPalindrome(string.substring(1, string.length - 1));
+
+        //        return false;
+        //    }
         //}
     </script>
 </body>

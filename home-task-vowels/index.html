@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        "use strict"
+
+        let str = prompt("Введите строку:");
+        while (str === null) {
+            str = prompt("Строка не введена. Пожалуйста, введите строку еще раз:");
+        }
+
+        alert(`Количество гласных букв: ${countVowels(str)}`);
+
+        function countVowels (inputString) {
+            const vowels = "ауоиэыяюеё";
+            let count = 0
+
+            if (inputString) {
+                for (let i = 0; i < inputString.length; i++)
+                {
+                    if (vowels.indexOf(inputString[i].toLowerCase()) !== -1)
+                        count++;
+                }
+            }
+
+            return count;
+        }
+    </script>
+</body>
+</html>
