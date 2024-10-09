@@ -4,26 +4,53 @@
     <script>
         "use strict"
 
-        let str = prompt("Введите строку:");
-        while (str === null) {
-            str = prompt("Строка не введена. Пожалуйста, введите строку еще раз:");
-        }
+        var wrapP = buildWrapper("P");
+        console.log(wrapP("Однажды в студёную зимнюю пору"));
+        console.log(wrapP("Однажды в студёную зимнюю пору", { lang: "ru" }));
+        console.log(wrapP("Однажды в <студёную> зимнюю пору"));
 
-        alert(`Количество гласных букв: ${countVowels(str)}`);
+        var wrapH1 = buildWrapper("H1");
+        console.log(wrapH1("СТИХИ", { align: "center", title: "M&M's" }));
 
-        function countVowels (inputString) {
-            const vowels = "ауоиэыяюеё";
-            let count = 0
-
-            if (inputString) {
-                for (let i = 0; i < inputString.length; i++)
+        function buildWrapper(tagName) {
+            function formatString(string) {
+                let result = '';
+                for (let i = 0; i < string.length; i++)
                 {
-                    if (vowels.indexOf(inputString[i].toLowerCase()) !== -1)
-                        count++;
+                    switch (string[i]) {
+                        case '<':
+                            result += '&lt;';
+                            break;
+                        case '>':
+                            result += '&gt;';
+                            break;
+                        case '\'':
+                            result += '&apos;'
+                            break;
+                        case '\"':
+                            result += '&quot;';
+                            break;
+                        case '&':
+                            result += '&amp;';
+                            break;
+                        default:
+                            result += string[i];
+                    }
                 }
+
+                return result;
             }
 
-            return count;
+            return function (text, attributesObject) {
+                let attributes = '';
+                if (typeof attributesObject === 'object') {
+                    for (let attribute in attributesObject) {
+                        attributes += ` ${attribute}='${formatString(attributesObject[attribute])}'`;
+                    }   
+                }
+
+                return `<${tagName}${attributes}>${formatString(text)}</${tagName}>`;
+            }
         }
     </script>
 </body>
