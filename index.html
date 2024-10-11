@@ -4,52 +4,33 @@
     <script>
         "use strict"
 
-        var wrapP = buildWrapper("P");
-        console.log(wrapP("Однажды в студёную зимнюю пору"));
-        console.log(wrapP("Однажды в студёную зимнюю пору", { lang: "ru" }));
-        console.log(wrapP("Однажды в <студёную> зимнюю пору"));
+        console.log(formatNumber(2.3, "# ### ###.##"));
+        console.log(formatNumber(12345.368, "# ### ###.##"));
 
-        var wrapH1 = buildWrapper("H1");
-        console.log(wrapH1("СТИХИ", { align: "center", title: "M&M's" }));
+        function formatNumber(inputNumber, pattern) {
+            let patternArray = pattern.split('.');
 
-        function buildWrapper(tagName) {
-            function formatString(string) {
+            let number = inputNumber.toFixed(patternArray[1].length);
+            let numberArray = number.toString().split('.');
+
+            return `${formatInteger(numberArray[0], patternArray[0])}.${numberArray[1]}`;
+
+            function formatInteger(integer, pattern) {
                 let result = '';
-                for (let i = 0; i < string.length; i++)
-                {
-                    switch (string[i]) {
-                        case '<':
-                            result += '&lt;';
-                            break;
-                        case '>':
-                            result += '&gt;';
-                            break;
-                        case '\'':
-                            result += '&apos;'
-                            break;
-                        case '\"':
-                            result += '&quot;';
-                            break;
-                        case '&':
-                            result += '&amp;';
-                            break;
-                        default:
-                            result += string[i];
+                let patternIndex = pattern.length - 1;
+                let integerIndex = integer.length - 1;
+
+                while (integerIndex >= 0) {
+                    if (pattern[patternIndex] === undefined || pattern[patternIndex] === '#') {
+                        result = `${integer[integerIndex]}${result}`;
+                        integerIndex--;
                     }
+                    else {
+                        result = ' ' + result;
+                    }
+                    patternIndex--;
                 }
-
                 return result;
-            }
-
-            return function (text, attributesObject) {
-                let attributes = '';
-                if (typeof attributesObject === 'object') {
-                    for (let attribute in attributesObject) {
-                        attributes += ` ${attribute}='${formatString(attributesObject[attribute])}'`;
-                    }   
-                }
-
-                return `<${tagName}${attributes}>${formatString(text)}</${tagName}>`;
             }
         }
     </script>
