@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        "use strict"
+
+        console.log(formatNumber(2.3, "# ### ###.##"));
+        console.log(formatNumber(12345.368, "# ### ###.##"));
+
+        function formatNumber(inputNumber, pattern) {
+            let patternArray = pattern.split('.');
+
+            let number = inputNumber.toFixed(patternArray[1].length);
+            let numberArray = number.toString().split('.');
+
+            return `${formatInteger(numberArray[0], patternArray[0])}.${numberArray[1]}`;
+
+            function formatInteger(integer, pattern) {
+                let result = '';
+                let patternIndex = pattern.length - 1;
+                let integerIndex = integer.length - 1;
+
+                while (integerIndex >= 0) {
+                    if (pattern[patternIndex] === undefined || pattern[patternIndex] === '#') {
+                        result = `${integer[integerIndex]}${result}`;
+                        integerIndex--;
+                    }
+                    else {
+                        result = ' ' + result;
+                    }
+                    patternIndex--;
+                }
+                return result;
+            }
+        }
+    </script>
+</body>
+</html>
