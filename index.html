@@ -9,7 +9,6 @@
 
         function formatNumber(inputNumber, pattern) {
             let patternArray = pattern.split('.');
-
             let number = inputNumber.toFixed(patternArray[1].length);
             let numberArray = number.toString().split('.');
 
@@ -30,6 +29,7 @@
                     }
                     patternIndex--;
                 }
+                
                 return result;
             }
         }
