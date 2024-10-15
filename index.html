@@ -2,37 +2,33 @@
 <html>
 <body>
     <script>
-        "use strict"
+        function randomDiap(n, m) {
+            return Math.floor(Math.random() * (m - n + 1)) + n;
+        }
 
-        console.log(formatNumber(2.3, "# ### ###.##"));
-        console.log(formatNumber(12345.368, "# ### ###.##"));
+        function mood(colorsCount) {
+            const colors = ['', 'красный', 'оранжевый', 'жёлтый', 'зелёный', 'голубой', 'синий', 'фиолетовый'];
 
-        function formatNumber(inputNumber, pattern) {
-            let patternArray = pattern.split('.');
-            let number = inputNumber.toFixed(patternArray[1].length);
-            let numberArray = number.toString().split('.');
-
-            return `${formatInteger(numberArray[0], patternArray[0])}.${numberArray[1]}`;
-
-            function formatInteger(integer, pattern) {
-                let result = '';
-                let patternIndex = pattern.length - 1;
-                let integerIndex = integer.length - 1;
-
-                while (integerIndex >= 0) {
-                    if (pattern[patternIndex] === undefined || pattern[patternIndex] === '#') {
-                        result = `${integer[integerIndex]}${result}`;
-                        integerIndex--;
+            if (colorsCount > colors.length - 1) {
+                console.warn(`максимальное значение не должно превышать ${colors.length - 1}`);
+            }
+            else {
+                console.log('цветов: ' + colorsCount);
+                let index = 1;
+                let colorsObj = {};
+                while (index <= colorsCount) {
+                    const n = randomDiap(1, 7);
+                    const colorName = colors[n];
+                    if (!(colorName in colorsObj)){
+                        colorsObj[colorName] = true;
+                        index++;
+                        console.log(colorName);
                     }
-                    else {
-                        result = ' ' + result;
-                    }
-                    patternIndex--;
                 }
-                
-                return result;
             }
         }
+
+        mood(3);
     </script>
 </body>
 </html>
