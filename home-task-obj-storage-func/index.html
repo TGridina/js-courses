@@ -21,7 +21,6 @@
                     delete self.storage[key];
                     return true;
                 }
-
                 return false;
             }
 
@@ -34,12 +33,8 @@
         drinkStorage.addValue("PinaColada", { "isAlcohol": true, "description": "This is a sweet and fruity frozen pineapple drink!", "recipe": "Mix pineapple juice, coconut cream, light rum." })
         console.log(drinkStorage.getValue("PinaColada"));
         console.log(drinkStorage.getKeys());
-        console.log(drinkStorage.deleteValue("Test"));
         console.log(drinkStorage.deleteValue("PinaColada"));
         console.log(drinkStorage.getValue("PinaColada"));
-        console.log(drinkStorage.getKeys());
-
-        drinkStorage.addValue(true, false);
         console.log(drinkStorage.getKeys());
 
     </script>
