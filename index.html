@@ -17,23 +17,38 @@
     </style>
 </head>
 <body>
-    <div>
-        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
-    </div>
-
     <script>
         "use strict"
 
-        let drinkStorage = new ObjStorageFunc();
+        class ObjStorageClass {
+
+            constructor() {
+                this.storage = {};
+            }
+
+            addValue(key, value) {
+                this.storage[key] = value;
+            }
+
+            getValue(key) {
+                return this.storage[key];
+            }
+
+            deleteValue(key) {
+                if (key in this.storage) {
+                    delete this.storage[key];
+                    return true;
+                }
+
+                return false;
+            }
+
+            getKeys() {
+                return Object.keys(this.storage);
+            }
+        }
+
+        let drinkStorage = new ObjStorageClass();
 
         function addDrink() {
             let name = getInputText("Введите название напитка:");
@@ -49,8 +64,8 @@
                 alert(`Напиток '${name}' отсуствует.`);
             else {
                 alert(`Напиток: ${name}
-Алкогольный: ${drink["isAlcohol"] ? "да" : "нет"}
-Рецепт приготовления: ${drink["recipe"]}`);
+Алкогольный: ${drink.isAlcohol ? "да" : "нет"}
+Рецепт приготовления: ${drink.recipe}`);
             }
         }
 
@@ -84,33 +99,18 @@
 
             return name;
         }
-
-        function ObjStorageFunc() {
-            const self = this;
-            self.storage = {};
-
-            self.addValue = function (key, value) {
-                self.storage[key] = value;
-            }
-
-            self.getValue = function (key) {
-                return self.storage[key];
-            }
-
-            self.deleteValue = function (key) {
-                if (key in self.storage) {
-                    delete self.storage[key];
-                    return true;
-                }
-
-                return false;
-            }
-
-            self.getKeys = function () {
-                return Object.keys(self.storage);
-            }
-        }
-
     </script>
+    <div>
+        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
+    </div>
 </body>
 </html>
