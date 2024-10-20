@@ -1,116 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        .button {
-            background-color: #DDA0DD;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            width: 200px;
-        }
-    </style>
-</head>
 <body>
+    <input type=button value='корни' onclick='ttt()'>
+    <input type=button value='авто-тесты' onclick='squareRootsTests()'>
+
     <script>
-        "use strict"
 
-        class ObjStorageClass {
+        // находим корни квадратного уравнения
+        // возвращает массив корней
+        function squareRoots(a, b, c) {
+            const d = b * b - 4 * a * c; // дискриминант
 
-            constructor() {
-                this.storage = {};
-            }
+            if (d < 0)
+                return []; // нет корней
 
-            addValue(key, value) {
-                this.storage[key] = value;
-            }
+            if (d == 0)
+                return [-b / (2 * a)]; // один корень
 
-            getValue(key) {
-                return this.storage[key];
-            }
+            if (a == 0)
+                return [-c / b];
 
-            deleteValue(key) {
-                if (key in this.storage) {
-                    delete this.storage[key];
-                    return true;
-                }
-
-                return false;
-            }
-
-            getKeys() {
-                return Object.keys(this.storage);
-            }
+            const x1 = (-b + Math.sqrt(d)) / (2 * a);
+            const x2 = (-b - Math.sqrt(d)) / (2 * a);
+            return [x1, x2]; // два корня
         }
 
-        let drinkStorage = new ObjStorageClass();
+        function squareRootsTests() {
 
-        function addDrink() {
-            let name = getInputText("Введите название напитка:");
-            let recipe = getInputText("Введите рецепт напитка:");
-            let isAlcohol = confirm("Это алкогольный напиток?");
-            drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
-        }
-
-        function getDrink() {
-            let name = getInputText("Введите название напитка:");
-            let drink = drinkStorage.getValue(name);
-            if (drink === undefined)
-                alert(`Напиток '${name}' отсуствует.`);
-            else {
-                alert(`Напиток: ${name}
-Алкогольный: ${drink.isAlcohol ? "да" : "нет"}
-Рецепт приготовления: ${drink.recipe}`);
+            {
+                console.log('тест 1,1,1 -> нет корней');
+                const roots = squareRoots(1, 1, 1);
+                console.log((roots.length == 0)
+                    ? 'пройден' : 'НЕ ПРОЙДЕН!')
             }
+
+            {
+                console.log('тест 1,-2,-3 -> два корня 3,-1');
+                const roots = squareRoots(1, -2, -3);
+                console.log(((roots.length == 2) && (roots[0] == 3) && (roots[1] == -1))
+                    ? 'пройден' : 'НЕ ПРОЙДЕН!')
+            }
+
+            {
+                console.log('тест -1,-2,15 -> два корня -5,3');
+                const roots = squareRoots(-1, -2, 15);
+                console.log(((roots.length == 2) && (roots[0] == -5) && (roots[1] == 3))
+                    ? 'пройден' : 'НЕ ПРОЙДЕН!')
+            }
+
+            {
+                console.log('тест 1,12,36 -> один корень -6');
+                const roots = squareRoots(1, 12, 36);
+                console.log(((roots.length == 1) && (roots[0] == -6))
+                    ? 'пройден' : 'НЕ ПРОЙДЕН!')
+            }
+
+            {
+                console.log('тест 0,5,-10 -> один корень 2');
+                const roots = squareRoots(0, 5, -10);
+                console.log(((roots.length == 1) && (roots[0] == 2))
+                    ? 'пройден' : 'НЕ ПРОЙДЕН!')
+            }
+
         }
 
-        function deleteDrink() {
-            let name = getInputText("Введите название напитка:");
-            if (drinkStorage.deleteValue(name))
-                alert(`Напиток '${name}' удален.`);
+        function ttt() {
+            const a = Number(prompt('Введите a'));
+            const b = Number(prompt('Введите b'));
+            const c = Number(prompt('Введите c'));
+            const roots = squareRoots(a, b, c);
+
+            if (!roots.length)
+                alert('корней нет!');
+            else if (roots.length == 1)
+                alert('один корень: ' + roots[0]);
             else
-                alert(`Напиток '${name}' отсуствует.`);
+                alert('два корня: ' + roots[0] + ' и ' + roots[1]);
         }
 
-        function getDrinks() {
-            let drinksArray = drinkStorage.getKeys();
-            if (drinksArray.length === 0)
-                alert("Напитков в хранилище нет.");
-            else {
-                let drinks = "";
-                for (let i = 0; i < drinksArray.length; i++) {
-                    drinks += drinksArray[i] + "\n";
-                }
-                alert(drinks);
-            }
-        }
-
-        function getInputText(message) {
-            let name = "";
-            do {
-                name = prompt(message);
-            }
-            while (name === null || name.trim().length === 0)
-
-            return name;
-        }
     </script>
-    <div>
-        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
-    </div>
-    <div>
-        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
-    </div>
 </body>
 </html>
