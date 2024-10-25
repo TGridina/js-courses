@@ -2,52 +2,105 @@
 <html>
 <body>
     <script>
-        "use strict"
+        function deepCopy(value) {
+            if (value === null)
+                return null;
 
-        let str = prompt("Введите строку:");
-        while (str === null) {
-            str = prompt("Строка не введена. Пожалуйста, введите строку еще раз:");
+            if (Array.isArray(value)) {
+                let clone = [];
+
+                for (i = 0; i < value.length; i++) {
+                    if (typeof value[i] === 'object' || Array.isArray(value[i]))
+                        clone[i] = deepCopy(value[i]);
+                    else
+                        clone[i] = value[i];
+                }
+
+                return clone;
+            }
+
+            if (typeof value === 'object') {
+                let clone = Object.assign({}, value);
+
+                Object.keys(clone).forEach(k => {
+                    if (typeof value[k] === "object" || Array.isArray(value[k]))
+                        clone[k] = deepCopy(value[k]);
+                });
+
+                return clone;
+            }
+
+            return value;
         }
 
-        alert(`Количество гласных букв (for): ${countVowels(str)}
-Количество гласных букв (foreach): ${countVowelsForEach(str)}
-Количество гласных букв (filter): ${countVowelsFilter(str)}
-Количество гласных букв (reduce): ${countVowelsReduce(str)}`);
+        var tests = new Test();
 
-        function countVowels(inputString) {
-            const vowels = "ауоиэыяюеё";
-            let count = 0;
-            if (inputString) {
-                for (let i = 0; i < inputString.length; i++) {
-                    if (vowels.indexOf(inputString[i].toLowerCase()) !== -1)
-                        count++;
+        var h1 = { a: 5, b: { b1: 6, b2: 7 }, c: [33, 22], d: null, e: undefined, f: Number.NaN };
+        var h2 = deepCopy(h1);
+        tests.getResult(h1 === h2, false);
+        tests.getResult(h1 === h2, false);
+        tests.getResult(h1.a === h2.a, true);
+        tests.getResult(h1.b === h2.b, false);
+        tests.getResult(h1.b.b1 === h2.b.b1, true);
+        tests.getResult(h1.c === h2.c, false);
+        tests.getResult(h1.c[0] === h2.c[0], true);
+        tests.getResult(h1.d === h2.d, true);
+        tests.getResult(h1.e === h2.e, true);
+        tests.getResult(isNaN(h2.f), true);
+        tests.getResult(h2.c instanceof Array, true);
+
+        var a1 = [5, { b1: 6, b2: 7 }, [33, 22], null, undefined, Number.NaN];
+        var a2 = deepCopy(a1);
+        tests.getResult(a1 === a2, false);
+        tests.getResult(typeof (a2) === typeof (a1), true);
+        tests.getResult(a1[0] === a2[0], true);
+        tests.getResult(a1[1] === a2[1], false);
+        tests.getResult(a1[1].b1 === a2[1].b1, true);
+        tests.getResult(a1[2] === a2[2], false);
+        tests.getResult(a1[2][0] === a2[2][0], true);
+        tests.getResult(a1[3] === a2[3], true);
+        tests.getResult(a1[4] === a2[4], true);
+        tests.getResult(isNaN(a2[5]), true);
+        tests.getResult(a2[2] instanceof Array, true);
+
+        var v1 = "sss";
+        var v2 = deepCopy(v1);
+        tests.getResult(typeof (v2) === typeof (v1), true);
+        tests.getResult(v1 === v2, true);
+
+        var z1 = null;
+        var z2 = deepCopy(z1);
+        tests.getResult(typeof (z2) === typeof (z1), true);
+        tests.getResult(z1 === z2, true);
+
+        var n1 = Number.NaN;
+        var n2 = deepCopy(n1);
+        tests.getResult(typeof (n2) === typeof (n1), true);
+        tests.getResult(isNaN(n2), true);
+
+        tests.getStatistics();
+
+        function Test() {
+            const self = this;
+            let sucessNum = 0;
+            let failedNum = 0;
+
+            self.getResult = function (testResult, expectedResult) {
+                if (testResult === expectedResult) {
+                    sucessNum++;
+                    console.log("Пройден");
+                }
+                else {
+                    failedNum++;
+                    console.log("Не пройден");
                 }
             }
 
-            return count;
+            self.getStatistics = function () {
+                console.log(`Количество пройденных тестов: ${sucessNum}`);
+                console.log(`Количество не пройденных тестов: ${failedNum}`);
+            }
         }
-
-        function countVowelsForEach(inputString) {
-            const vowels = "ауоиэыяюеё";
-            let count = 0;
-            ([...inputString.toLowerCase()]).forEach(i => {
-                if (vowels.includes(i))
-                    count++;
-            });
-
-            return count;
-        }
-
-        function countVowelsReduce(inputString) {
-            const vowels = "ауоиэыяюеё";
-            return ([...inputString.toLowerCase()]).reduce((sum, current) => vowels.includes(current) ? sum + 1 : sum, 0);
-        }
-
-        function countVowelsFilter(inputString) {
-            const vowels = "ауоиэыяюеё";
-            return ([...inputString.toLowerCase()]).filter(i => vowels.includes(i)).length;
-        }
-
     </script>
 </body>
 </html>
