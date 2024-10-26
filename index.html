@@ -10,7 +10,7 @@
                 let clone = [];
 
                 for (i = 0; i < value.length; i++) {
-                    if (typeof value[i] === 'object' || Array.isArray(value[i]))
+                    if (typeof value[i] === 'object')
                         clone[i] = deepCopy(value[i]);
                     else
                         clone[i] = value[i];
@@ -23,7 +23,7 @@
                 let clone = Object.assign({}, value);
 
                 Object.keys(clone).forEach(k => {
-                    if (typeof value[k] === "object" || Array.isArray(value[k]))
+                    if (typeof value[k] === "object")
                         clone[k] = deepCopy(value[k]);
                 });
 
