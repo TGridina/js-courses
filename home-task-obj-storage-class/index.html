@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .button {
+            background-color: #DDA0DD;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        "use strict"
+
+        class ObjStorageClass {
+
+            constructor() {
+                this.storage = {};
+            }
+
+            addValue(key, value) {
+                this.storage[key] = value;
+            }
+
+            getValue(key) {
+                return this.storage[key];
+            }
+
+            deleteValue(key) {
+                if (key in this.storage) {
+                    delete this.storage[key];
+                    return true;
+                }
+
+                return false;
+            }
+
+            getKeys() {
+                return Object.keys(this.storage);
+            }
+        }
+
+        let drinkStorage = new ObjStorageClass();
+
+        function addDrink() {
+            let name = getInputText("Введите название напитка:");
+            let recipe = getInputText("Введите рецепт напитка:");
+            let isAlcohol = confirm("Это алкогольный напиток?");
+            drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
+        }
+
+        function getDrink() {
+            let name = getInputText("Введите название напитка:");
+            let drink = drinkStorage.getValue(name);
+            if (drink === undefined)
+                alert(`Напиток '${name}' отсуствует.`);
+            else {
+                alert(`Напиток: ${name}
+Алкогольный: ${drink.isAlcohol ? "да" : "нет"}
+Рецепт приготовления: ${drink.recipe}`);
+            }
+        }
+
+        function deleteDrink() {
+            let name = getInputText("Введите название напитка:");
+            if (drinkStorage.deleteValue(name))
+                alert(`Напиток '${name}' удален.`);
+            else
+                alert(`Напиток '${name}' отсуствует.`);
+        }
+
+        function getDrinks() {
+            let drinksArray = drinkStorage.getKeys();
+            if (drinksArray.length === 0)
+                alert("Напитков в хранилище нет.");
+            else {
+                let drinks = "";
+                for (let i = 0; i < drinksArray.length; i++) {
+                    drinks += drinksArray[i] + "\n";
+                }
+                alert(drinks);
+            }
+        }
+
+        function getInputText(message) {
+            let name = "";
+            do {
+                name = prompt(message);
+            }
+            while (name === null || name.trim().length === 0)
+
+            return name;
+        }
+    </script>
+    <div>
+        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
+    </div>
+</body>
+</html>

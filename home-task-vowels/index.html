@@ -9,15 +9,16 @@
             str = prompt("Строка не введена. Пожалуйста, введите строку еще раз:");
         }
 
-        alert(`Количество гласных букв: ${countVowels(str)}`);
+        alert(`Количество гласных букв (for): ${countVowels(str)}
+Количество гласных букв (foreach): ${countVowelsForEach(str)}
+Количество гласных букв (filter): ${countVowelsFilter(str)}
+Количество гласных букв (reduce): ${countVowelsReduce(str)}`);
 
-        function countVowels (inputString) {
+        function countVowels(inputString) {
             const vowels = "ауоиэыяюеё";
-            let count = 0
-
+            let count = 0;
             if (inputString) {
-                for (let i = 0; i < inputString.length; i++)
-                {
+                for (let i = 0; i < inputString.length; i++) {
                     if (vowels.indexOf(inputString[i].toLowerCase()) !== -1)
                         count++;
                 }
@@ -25,6 +26,28 @@
 
             return count;
         }
+
+        function countVowelsForEach(inputString) {
+            const vowels = "ауоиэыяюеё";
+            let count = 0;
+            ([...inputString.toLowerCase()]).forEach(i => {
+                if (vowels.includes(i))
+                    count++;
+            });
+
+            return count;
+        }
+
+        function countVowelsReduce(inputString) {
+            const vowels = "ауоиэыяюеё";
+            return ([...inputString.toLowerCase()]).reduce((sum, current) => vowels.includes(current) ? sum + 1 : sum, 0);
+        }
+
+        function countVowelsFilter(inputString) {
+            const vowels = "ауоиэыяюеё";
+            return ([...inputString.toLowerCase()]).filter(i => vowels.includes(i)).length;
+        }
+
     </script>
 </body>
 </html>

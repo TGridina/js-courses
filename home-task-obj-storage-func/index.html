@@ -1,8 +1,89 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <style>
+        .button {
+            background-color: #DDA0DD;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            width: 200px;
+        }
+    </style>
+</head>
 <body>
+    <div>
+        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
+    </div>
+
     <script>
         "use strict"
+
+        let drinkStorage = new ObjStorageFunc();
+
+        function addDrink() {
+            let name = getInputText("Введите название напитка:");
+            let recipe = getInputText("Введите рецепт напитка:");
+            let isAlcohol = confirm("Это алкогольный напиток?");
+            drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
+        }
+
+        function getDrink() {
+            let name = getInputText("Введите название напитка:");
+            let drink = drinkStorage.getValue(name);
+            if (drink === undefined)
+                alert(`Напиток '${name}' отсуствует.`);
+            else {
+                alert(`Напиток: ${name}
+Алкогольный: ${drink["isAlcohol"] ? "да" : "нет"}
+Рецепт приготовления: ${drink["recipe"]}`);
+            }
+        }
+
+        function deleteDrink() {
+            let name = getInputText("Введите название напитка:");
+            if (drinkStorage.deleteValue(name))
+                alert(`Напиток '${name}' удален.`);
+            else
+                alert(`Напиток '${name}' отсуствует.`);
+        }
+
+        function getDrinks() {
+            let drinksArray = drinkStorage.getKeys();
+            if (drinksArray.length === 0)
+                alert("Напитков в хранилище нет.");
+            else {
+                let drinks = "";
+                for (let i = 0; i < drinksArray.length; i++) {
+                    drinks += drinksArray[i] + "\n";
+                }
+                alert(drinks);
+            }
+        }
+
+        function getInputText(message) {
+            let name = "";
+            do {
+                name = prompt(message);
+            }
+            while (name === null || name.trim().length === 0)
+
+            return name;
+        }
 
         function ObjStorageFunc() {
             const self = this;
@@ -21,6 +102,7 @@
                     delete self.storage[key];
                     return true;
                 }
+
                 return false;
             }
 
@@ -28,14 +110,6 @@
                 return Object.keys(self.storage);
             }
         }
-
-        let drinkStorage = new ObjStorageFunc();
-        drinkStorage.addValue("PinaColada", { "isAlcohol": true, "description": "This is a sweet and fruity frozen pineapple drink!", "recipe": "Mix pineapple juice, coconut cream, light rum." })
-        console.log(drinkStorage.getValue("PinaColada"));
-        console.log(drinkStorage.getKeys());
-        console.log(drinkStorage.deleteValue("PinaColada"));
-        console.log(drinkStorage.getValue("PinaColada"));
-        console.log(drinkStorage.getKeys());
 
     </script>
 </body>
