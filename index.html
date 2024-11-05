@@ -120,7 +120,7 @@
 
         const rubric = document.getElementById("rubric");
         const rubricError = document.getElementById("rubricError");
-        rubric.addEventListener("blur", validateRubric);
+        rubric.addEventListener("change", validateRubric);
 
         const publicRadio = document.querySelectorAll('input[name="public"]');
         const publicError = document.getElementById("publicError");
@@ -130,7 +130,7 @@
 
         const comments = document.getElementById("comments");
         const commentsError = document.getElementById("commentsError");
-        rubric.addEventListener("change", validateComments);
+        comments.addEventListener("change", validateComments);
 
         const article = document.getElementById("article");
         const articleError = document.getElementById("articleError");
