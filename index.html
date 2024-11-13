@@ -36,7 +36,7 @@
             }
         }
 
-        let zIndex = 0;
+        let zIndex = 1;
         let images = document.getElementsByTagName("img");
         for (let i = 0; i < images.length; i++) {
             let image = images[i];
@@ -49,18 +49,19 @@
                 image.style.zIndex = zIndex++;
                 image.style.cursor = 'pointer';
 
+                document.addEventListener("mousemove", onMouseMove);
+                image.addEventListener("mouseup", onMouseUp);
+
                 function onMouseMove(event) {
                     image.style.left = event.clientX - shiftX + 'px';
                     image.style.top = event.clientY - shiftY + 'px';
                 }
 
-                document.addEventListener("mousemove", onMouseMove);
-
-                image.addEventListener("mouseup",function () {
+                function onMouseUp(event) {
                     document.removeEventListener('mousemove', onMouseMove);
-                    image.onmouseup = null;
                     image.style.cursor = null;
-                });
+                    image.removeEventListener("mouseup", onMouseUp);
+                }
 
                 image.ondragstart = imageDragStart;
             });
