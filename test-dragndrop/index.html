@@ -41,7 +41,7 @@
         for (let i = 0; i < images.length; i++) {
             let image = images[i];
 
-            image.onmousedown = function (event) {
+            image.addEventListener("mousedown", function (event) {
                 let shiftX = event.clientX - image.getBoundingClientRect().left;
                 let shiftY = event.clientY - image.getBoundingClientRect().top;
 
@@ -49,20 +49,20 @@
                 image.style.cursor = 'pointer';
 
                 function onMouseMove(event) {
-                    image.style.left = event.pageX - shiftX + 'px';
-                    image.style.top = event.pageY - shiftY + 'px';
+                    image.style.left = event.clientX - shiftX + 'px';
+                    image.style.top = event.clientY - shiftY + 'px';
                 }
 
-                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener("mousemove", onMouseMove);
 
-                image.onmouseup = function () {
+                image.addEventListener("mouseup", function () {
                     document.removeEventListener('mousemove', onMouseMove);
                     image.onmouseup = null;
                     image.style.cursor = null;
-                };
+                });
 
                 image.ondragstart = imageDragStart;
-            }
+            });
         }
 
         let imageDragStart = () => false;
