@@ -42,6 +42,7 @@
             let image = images[i];
 
             image.addEventListener("mousedown", function (event) {
+                if (event.which !== 1) return;
                 let shiftX = event.clientX - image.getBoundingClientRect().left;
                 let shiftY = event.clientY - image.getBoundingClientRect().top;
 
