@@ -59,8 +59,8 @@
 
                 function onMouseUp(event) {
                     document.removeEventListener('mousemove', onMouseMove);
-                    image.style.cursor = null;
                     image.removeEventListener("mouseup", onMouseUp);
+                    image.style.cursor = null;
                 }
 
                 image.ondragstart = imageDragStart;
