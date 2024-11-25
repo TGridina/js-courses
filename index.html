@@ -73,7 +73,7 @@
 
                 const number = document.createElementNS(svgns, 'text');
                 number.setAttribute('x', hourCicleCenterX);
-                number.setAttribute('y', hourCicleCenterY + fontSize / 3);
+                number.setAttribute('y', Math.round(hourCicleCenterY + fontSize / 3));
                 number.setAttribute('text-anchor', 'middle');
                 number.setAttribute('stroke', 'white');
                 number.setAttribute('fill', 'white');
@@ -86,7 +86,7 @@
             const clockFaceRatio = 1 / 3;
             let clockFace = document.createElementNS(svgns, 'text');
             clockFace.setAttribute('x', clockCenterX);
-            clockFace.setAttribute('y', clockCenterY - clockRadius * clockFaceRatio);
+            clockFace.setAttribute('y', Math.round(clockCenterY - clockRadius * clockFaceRatio));
             clockFace.setAttribute('text-anchor', 'middle');
             clockFace.setAttribute('stroke', 'white');
             clockFace.setAttribute('fill', 'white');
