@@ -5,11 +5,7 @@ export class LocalStorageClass {
     }
 
     addValue(key, value) {
-        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        if (!itemsArray) {
-            return false;
-        }
-
+        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey)) || [];
         let item = itemsArray.find(k => k.key === key);
         if (item) {
             item.value = value;
@@ -17,7 +13,6 @@ export class LocalStorageClass {
         else {
             itemsArray.push({ key, value });
         }
-
         localStorage.setItem(this.storageKey, JSON.stringify(itemsArray));
     }
 
