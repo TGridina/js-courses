@@ -2,317 +2,156 @@
 <html>
 <head>
     <style>
-        button:disabled {
-            cursor: not-allowed;
-        }
-
-        button:enabled {
-            cursor: pointer;
-        }
-
-        button {
+        .button {
+            background-color: #DDA0DD;
             border: none;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 32px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            cursor: pointer;
-            background-color: gray;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            height: 40px;
-            width: 80px;
-        }
-
-        span {
-            align-content: center;
-            font-size: 40px;
-            font-family: Arial;
-        }
-
-        .score {
-            position: absolute;
-            width: 420px;
-            left: 240px;
-            top: 20px;
-        }
-
-        .player {
-            width: 15px;
-            height: 90px;
-            background-color: darkblue;
-            position: absolute;
-            z-index: 1;
-        }
-
-        .playerL {
-            top: 90px;
-            left: 20px;
-        }
-
-        .playerR {
-            top: 350px;
-            left: 505px;
-        }
-
-        .playField {
-            background-color: darkgreen;
-            position: absolute;
-            top: 90px;
-            left: 20px;
+            margin: 4px 2px;
+            width: 200px;
         }
     </style>
 </head>
 <body>
-
-    <button id="startBtn" onclick="startGame()">Start</button>
-    <div class="score">
-        <span id="scoreL">0</span>
-        <span>:</span>
-        <span id="scoreR">0</span>
+    <div>
+        <button class="button" type="button" onclick="addDrink()">Ввод информации о напитке</button>
     </div>
-    <div id="playField" class="playField"></div>
-    <div id="playerL" class="player playerL"></div>
-    <div id="playerR" class="player playerR"></div>
+    <div>
+        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
+    </div>
+    <div>
+        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
+    </div>
 
+    <script type="module" src="localStorage.js"></script>
     <script>
-        let areaH = {
-            width: 500,
-            height: 350,
+        "use strict"
 
-            setSize: function () {
-                let playField = document.getElementById("playField");
-                playField.style.width = this.width + "px";
-                playField.style.height = this.height + "px";
+        //class LocalStorageClass {
+
+        //    constructor(storageKey) {
+        //        this.storageKey = storageKey;
+        //    }
+
+        //    addValue(key, value) {
+        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
+        //        if (!itemsArray) {
+        //            return false;
+        //        }
+
+        //        let item = itemsArray.find(k => k.key === key);
+        //        if (item) {
+        //            item.value = value;
+        //        }
+        //        else {
+        //            itemsArray.push({ key, value });
+        //        }
+
+        //        localStorage.setItem(this.storageKey, JSON.stringify(itemsArray));
+        //    }
+
+        //    getValue(key) {
+        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+        //        for (let i = 0; i < itemsArray.length; i++) {
+        //            if (itemsArray[i].key === key) {
+        //                return itemsArray[i].value;
+        //            }
+        //        }
+
+        //        return null;
+        //    }
+
+        //    deleteValue(key) {
+        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
+        //        if (!itemsArray) {
+        //            return false;
+        //        }
+
+        //        let newItemsArray = [];
+        //        for (let i = 0; i < itemsArray.length; i++) {
+        //            if (itemsArray[i].key !== key) {
+        //                newItemsArray.push(itemsArray[i]);
+        //            }
+        //        }
+        //        localStorage.setItem(this.storageKey, JSON.stringify(newItemsArray));
+
+        //        return itemsArray.length !== newItemsArray.length;
+        //    }
+
+        //    getKeys() {
+        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
+        //        if (!itemsArray) {
+        //            return [];
+        //        }
+
+        //        let keysArray = [];
+        //        for (let i = 0; i < itemsArray.length; i++) {
+        //            keysArray.push(itemsArray[i].key);
+        //        }
+
+        //        return keysArray;
+        //    }
+        //}
+
+        let drinkStorage = new LocalStorageClass("drinks");
+
+        function addDrink() {
+            let name = getInputText("Введите название напитка:");
+            let recipe = getInputText("Введите рецепт напитка:");
+            let isAlcohol = confirm("Это алкогольный напиток?");
+            drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
+        }
+
+        function getDrink() {
+            let name = getInputText("Введите название напитка:");
+            let drink = drinkStorage.getValue(name);
+            if (drink === null)
+                alert(`Напиток '${name}' отсуствует.`);
+            else {
+                alert(`Напиток: ${name}
+Алкогольный: ${drink.isAlcohol ? "да" : "нет"}
+Рецепт приготовления: ${drink.recipe}`);
             }
         }
 
-        areaH.setSize();
-
-        let gameH = {
-            isRunning: false,
-
-            stop: function () {
-                this.isRunning = false;
-                document.getElementById("startBtn").disabled = false;
-            },
-
-            start: function () {
-                this.isRunning = true;
-                document.getElementById("startBtn").disabled = true;
-            }
-        }
-
-        let playerLeft = {
-            currentSpeed: 0,
-            speed: 10,
-            minY: 90,
-            maxY: 350,
-            score: 0,
-            width: 15,
-            height: 90,
-
-            move: function () {
-                let player = document.getElementById("playerL");
-                if (this.currentSpeed !== 0) {
-                    let top = player.offsetTop + this.currentSpeed;
-                    if (top < this.minY)
-                        top = this.minY;
-                    if (top > this.maxY)
-                        top = this.maxY;
-                    player.style.top = top + 'px';
-                }
-            },
-
-            increaseScore: function () {
-                this.score++;
-                document.getElementById("scoreL").innerText = this.score;
-            },
-
-            isCatch: function (bollY) {
-                let player = document.getElementById("playerL");
-                let top = player.offsetTop - this.minY;
-                return bollY > top && bollY < top + this.height;
-            }
-        }
-
-        let playerRight = {
-            currentSpeed: 0,
-            speed: 5,
-            minY: 90,
-            maxY: 350,
-            score: 0,
-            width: 15,
-            height: 90,
-
-            move: function () {
-                let player = document.getElementById("playerR");
-                if (this.currentSpeed !== 0) {
-                    let top = player.offsetTop + this.currentSpeed;
-                    if (top < this.minY)
-                        top = this.minY;
-                    if (top > this.maxY)
-                        top = this.maxY;
-                    player.style.top = top + 'px';
-                }
-            },
-
-            increaseScore: function () {
-                this.score++;
-                document.getElementById("scoreR").innerText = this.score;
-            },
-
-            isCatch: function (bollY) {
-                let player = document.getElementById("playerR");
-                let top = player.offsetTop - this.minY;
-                return bollY > top && bollY < top + this.height;
-            }
-        }
-
-        let ballH = {
-            posX: 250,
-            posY: 175,
-            speedX: 5,
-            speedY: 5,
-            width: 20,
-            height: 20,
-
-            move: function () {
-                const ball = document.getElementById("ball");
-                ball.style.left = Math.round(this.posX) + "px";
-                ball.style.top = Math.round(this.posY) + "px";
-            },
-
-            add: function () {
-                ball = document.createElement("div");
-                ball.id = "ball";
-                ball.style.borderRadius = "50%";
-                ball.style.backgroundColor = "white";
-                ball.style.position = "absolute";
-                ball.style.zIndex = 1;
-                ball.style.height = this.height + "px";
-                ball.style.width = this.width + "px";
-                ball.style.top = this.posY + "px";
-                ball.style.left = this.posX + "px";
-
-                let playField = document.getElementById("playField");
-                playField.appendChild(ball);
-            },
-
-            exists: function () {
-                return document.getElementById('ball') != null;
-            },
-
-            reset: function () {
-                this.posX = 250;
-                this.posY = 175;
-                this.speedX = 5;
-                this.speedY = 5;
-                let ball = document.getElementById("ball");
-                ball.style.left = Math.round(this.posX) + "px";
-                ball.style.top = Math.round(this.posY) + "px";
-            }
-        }
-
-        document.addEventListener('keydown', keyDown);
-        document.addEventListener('keyup', keyUp);
-
-        function startGame() {
-            gameH.start();
-
-            if (ballH.exists())
-                ballH.reset();
+        function deleteDrink() {
+            let name = getInputText("Введите название напитка:");
+            if (drinkStorage.deleteValue(name))
+                alert(`Напиток '${name}' удален.`);
             else
-                ballH.add();
+                alert(`Напиток '${name}' отсуствует.`);
         }
 
-        setInterval(tick, 25);
-
-        function tick() {
-            if (!gameH.isRunning)
-                return;
-
-            playerLeft.move();
-            playerRight.move();
-
-            ballH.posX += ballH.speedX;
-
-            // правая ракетка
-            if (ballH.posX + ballH.width > areaH.width - playerLeft.width) {
-                if (playerRight.isCatch(ballH.posY) || playerRight.isCatch(ballH.posY + ballH.height)) {
-                    ballH.speedX = -ballH.speedX;
-                    ballH.posX = areaH.width - ballH.width - playerLeft.width;
+        function getDrinks() {
+            let drinksArray = drinkStorage.getKeys();
+            if (drinksArray.length === 0)
+                alert("Напитков в хранилище нет.");
+            else {
+                let drinks = "";
+                for (let i = 0; i < drinksArray.length; i++) {
+                    drinks += drinksArray[i] + "\n";
                 }
-            }
-
-            if (ballH.posX + ballH.width > areaH.width) {
-                ballH.posX = areaH.width - ballH.width;
-                ballH.move();
-                gameH.stop();
-                playerLeft.increaseScore();
-                return;
-            }
-
-            // левая ракетка
-            if (ballH.posX < playerRight.width) {
-                if (playerLeft.isCatch(ballH.posY) || playerRight.isCatch(ballH.posY + ballH.height)) {
-                    ballH.speedX = -ballH.speedX;
-                    ballH.posX = playerRight.width;
-                }
-            }
-
-            if (ballH.posX < 0) {
-                ballH.posX = 0;
-                ballH.move();
-                gameH.stop();
-                playerRight.increaseScore();
-                return;
-            }
-
-            ballH.posY += ballH.speedY;
-
-            if (ballH.posY + ballH.height > areaH.height) {
-                ballH.speedY = -ballH.speedY;
-                ballH.posY = areaH.height - ballH.height;
-            }
-
-            if (ballH.posY < 0) {
-                ballH.speedY = -ballH.speedY;
-                ballH.posY = 0;
-            }
-
-            ballH.move();
-        }
-
-        function keyDown(e) {
-            switch (e.keyCode) {
-                case 16:
-                    playerLeft.currentSpeed = -playerLeft.speed;
-                    break;
-                case 17:
-                    playerLeft.currentSpeed = playerLeft.speed;
-                    break;
-                case 38:
-                    playerRight.currentSpeed = -playerRight.speed;
-                    break;
-                case 40:
-                    playerRight.currentSpeed = playerRight.speed;
-                    break;
-                case 13:
-                    startGame();
-                    break;
-
+                alert(drinks);
             }
         }
 
-        function keyUp() {
-            playerLeft.currentSpeed = 0;
-            playerRight.currentSpeed = 0;
+        function getInputText(message) {
+            let name = "";
+            do {
+                name = prompt(message);
+            }
+            while (name === null || name.trim().length === 0)
+
+            return name;
         }
+
     </script>
-
 </body>
 </html>
