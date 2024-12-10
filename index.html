@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="module" src="./localStorage.js">
-    </script>
     <style>
         .button {
             background-color: #DDA0DD;
@@ -152,6 +150,10 @@
             return name;
         }
 
+    </script>
+    <script type="module">
+        import { LocalStorageClass } from "./localStorage.js";
+        module.LocalStorageClass = LocalStorageClass;
     </script>
 </body>
 </html>
