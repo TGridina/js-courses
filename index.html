@@ -66,72 +66,6 @@
     <script type="module">
         import { LocalStorageClass } from "./LocalStorage.js";
 
-        //class LocalStorageClass {
-
-        //    constructor(storageKey) {
-        //        this.storageKey = storageKey;
-        //    }
-
-        //    addValue(key, value) {
-        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        //        if (!itemsArray) {
-        //            return false;
-        //        }
-
-        //        let item = itemsArray.find(k => k.key === key);
-        //        if (item) {
-        //            item.value = value;
-        //        }
-        //        else {
-        //            itemsArray.push({ key, value });
-        //        }
-
-        //        localStorage.setItem(this.storageKey, JSON.stringify(itemsArray));
-        //    }
-
-        //    getValue(key) {
-        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey)) || [];
-        //        for (let i = 0; i < itemsArray.length; i++) {
-        //            if (itemsArray[i].key === key) {
-        //                return itemsArray[i].value;
-        //            }
-        //        }
-
-        //        return null;
-        //    }
-
-        //    deleteValue(key) {
-        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        //        if (!itemsArray) {
-        //            return false;
-        //        }
-
-        //        let newItemsArray = [];
-        //        for (let i = 0; i < itemsArray.length; i++) {
-        //            if (itemsArray[i].key !== key) {
-        //                newItemsArray.push(itemsArray[i]);
-        //            }
-        //        }
-        //        localStorage.setItem(this.storageKey, JSON.stringify(newItemsArray));
-
-        //        return itemsArray.length !== newItemsArray.length;
-        //    }
-
-        //    getKeys() {
-        //        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        //        if (!itemsArray) {
-        //            return [];
-        //        }
-
-        //        let keysArray = [];
-        //        for (let i = 0; i < itemsArray.length; i++) {
-        //            keysArray.push(itemsArray[i].key);
-        //        }
-
-        //        return keysArray;
-        //    }
-        //}
-
         let addDrinkBtn = document.getElementById("addDrinkBtn");
         addDrinkBtn.addEventListener("click", addDrink);
 
@@ -157,20 +91,12 @@
         getDishesBtn.addEventListener("click", getDishes);
 
         let drinkStorage = new LocalStorageClass("drinks");
-        let dishStorage = new LocalStorageClass("dishes");
 
         function addDrink() {
             let name = getInputText("Введите название напитка:");
             let recipe = getInputText("Введите рецепт напитка:");
             let isAlcohol = confirm("Это алкогольный напиток?");
             drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
-        }
-
-        function addDish() {
-            let name = getInputText("Введите название блюда:");
-            let recipe = getInputText("Введите рецепт блюда:");
-            let isHot = confirm("Это горячее блюдо?");
-            dishStorage.addValue(name, { "isHot": isHot, "recipe": recipe });
         }
 
         function getDrink() {
@@ -185,32 +111,12 @@
             }
         }
 
-        function getDish() {
-            let name = getInputText("Введите название блюда:");
-            let dish = dishStorage.getValue(name);
-            if (dish === null)
-                alert(`Блюдо '${name}' отсуствует.`);
-            else {
-                alert(`Блюдо: ${name}
-Горячее: ${dish.isHot ? "да" : "нет"}
-Рецепт приготовления: ${dish.recipe}`);
-            }
-        }
-
         function deleteDrink() {
             let name = getInputText("Введите название напитка:");
             if (drinkStorage.deleteValue(name))
                 alert(`Напиток '${name}' удален.`);
             else
                 alert(`Напиток '${name}' отсуствует.`);
-        }
-
-        function deleteDish() {
-            let name = getInputText("Введите название блюда:");
-            if (dishStorage.deleteValue(name))
-                alert(`Блюдо '${name}' удалено.`);
-            else
-                alert(`Блюдо '${name}' отсуствует.`);
         }
 
         function getDrinks() {
@@ -226,6 +132,27 @@
             }
         }
 
+        let dishStorage = new LocalStorageClass("dishes");
+
+        function addDish() {
+            let name = getInputText("Введите название блюда:");
+            let recipe = getInputText("Введите рецепт блюда:");
+            let isHot = confirm("Это горячее блюдо?");
+            dishStorage.addValue(name, { "isHot": isHot, "recipe": recipe });
+        }
+
+        function getDish() {
+            let name = getInputText("Введите название блюда:");
+            let dish = dishStorage.getValue(name);
+            if (dish === null)
+                alert(`Блюдо '${name}' отсуствует.`);
+            else {
+                alert(`Блюдо: ${name}
+Горячее: ${dish.isHot ? "да" : "нет"}
+Рецепт приготовления: ${dish.recipe}`);
+            }
+        }
+
         function getDishes() {
             let dishesArray = dishStorage.getKeys();
             if (dishesArray.length === 0)
@@ -237,6 +164,14 @@
                 }
                 alert(dishes);
             }
+        }
+
+        function deleteDish() {
+            let name = getInputText("Введите название блюда:");
+            if (dishStorage.deleteValue(name))
+                alert(`Блюдо '${name}' удалено.`);
+            else
+                alert(`Блюдо '${name}' отсуствует.`);
         }
 
         function getInputText(message) {
