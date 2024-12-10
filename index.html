@@ -22,13 +22,13 @@
         <button id="addDrinkBtn" class="button" type="button">Ввод информации о напитке</button>
     </div>
     <div>
-        <button class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
+        <button id="getDrinkBtn" class="button" type="button" onclick="getDrink()">Получение информации о напитке</button>
     </div>
     <div>
-        <button class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
+        <button id="deleteDrinkBtn" class="button" type="button" onclick="deleteDrink()">Удаление информации о напитке</button>
     </div>
     <div>
-        <button class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
+        <button id="getDrinksBnt" class="button" type="button" onclick="getDrinks()">Перечень всех напитков</button>
     </div>
     <script type="module">
         import { LocalStorageClass } from "./LocalStorage.js";
@@ -99,9 +99,19 @@
         //    }
         //}
 
-        let drinkStorage = new LocalStorageClass("drinks");
         let addDrinkBtn = document.getElementById("addDrinkBtn");
         addDrinkBtn.addEventListener("click", addDrink);
+
+        let getDrinkBtn = document.getElementById("getDrinkBtn");
+        getDrinkBtn.addEventListener("click", getDrink);
+
+        let deleteDrinkBtn = document.getElementById("deleteDrinkBtn");
+        deleteDrinkBtn.addEventListener("click", deleteDrink);
+
+        let getDrinksBnt = document.getElementById("getDrinksBnt");
+        getDrinksBnt.addEventListener("click", getDrinks);
+
+        let drinkStorage = new LocalStorageClass("drinks");
 
         function addDrink() {
             let name = getInputText("Введите название напитка:");
