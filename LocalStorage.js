@@ -2,59 +2,29 @@ export class LocalStorageClass {
 
     constructor(storageKey) {
         this.storageKey = storageKey;
+        this.storage = JSON.parse(localStorage.getItem(this.storageKey)) || {};
     }
 
     addValue(key, value) {
-        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey)) || [];
-        let item = itemsArray.find(k => k.key === key);
-        if (item) {
-            item.value = value;
-        }
-        else {
-            itemsArray.push({ key, value });
-        }
-        localStorage.setItem(this.storageKey, JSON.stringify(itemsArray));
+        this.storage[key] = value;
+        localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
     }
 
     getValue(key) {
-        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey)) || [];
-        for (let i = 0; i < itemsArray.length; i++) {
-            if (itemsArray[i].key === key) {
-                return itemsArray[i].value;
-            }
-        }
-
-        return null;
+        return this.storage[key];
     }
 
     deleteValue(key) {
-        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        if (!itemsArray) {
-            return false;
+        if (key in this.storage) {
+            delete this.storage[key];
+            localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
+            return true;
         }
 
-        let newItemsArray = [];
-        for (let i = 0; i < itemsArray.length; i++) {
-            if (itemsArray[i].key !== key) {
-                newItemsArray.push(itemsArray[i]);
-            }
-        }
-        localStorage.setItem(this.storageKey, JSON.stringify(newItemsArray));
-
-        return itemsArray.length !== newItemsArray.length;
+        return false;
     }
 
     getKeys() {
-        let itemsArray = JSON.parse(localStorage.getItem(this.storageKey));
-        if (!itemsArray) {
-            return [];
-        }
-
-        let keysArray = [];
-        for (let i = 0; i < itemsArray.length; i++) {
-            keysArray.push(itemsArray[i].key);
-        }
-
-        return keysArray;
+        return Object.keys(this.storage);
     }
 }
