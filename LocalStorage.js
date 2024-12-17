@@ -2,12 +2,21 @@ export class LocalStorageClass {
 
     constructor(storageKey) {
         this.storageKey = storageKey;
-        this.storage = JSON.parse(localStorage.getItem(this.storageKey)) || {};
+        this.storage = {};
+        this.load();
+    }
+
+    save() {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
+    }
+
+    load() {
+        this.storage = JSON.parse(localStorage.getItem(this.storageKey));
     }
 
     addValue(key, value) {
         this.storage[key] = value;
-        localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
+        this.save();
     }
 
     getValue(key) {
@@ -17,7 +26,7 @@ export class LocalStorageClass {
     deleteValue(key) {
         if (key in this.storage) {
             delete this.storage[key];
-            localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
+            this.save();
             return true;
         }
 
