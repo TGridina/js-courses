@@ -102,7 +102,7 @@
         function getDrink() {
             let name = getInputText("Введите название напитка:");
             let drink = drinkStorage.getValue(name);
-            if (drink === null)
+            if (drink === undefined)
                 alert(`Напиток '${name}' отсуствует.`);
             else {
                 alert(`Напиток: ${name}
@@ -144,7 +144,7 @@
         function getDish() {
             let name = getInputText("Введите название блюда:");
             let dish = dishStorage.getValue(name);
-            if (dish === null)
+            if (dish === undefined)
                 alert(`Блюдо '${name}' отсуствует.`);
             else {
                 alert(`Блюдо: ${name}
