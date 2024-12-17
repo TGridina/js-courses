@@ -11,7 +11,9 @@ export class LocalStorageClass {
     }
 
     load() {
-        this.storage = JSON.parse(localStorage.getItem(this.storageKey));
+        if (localStorage.hasOwnProperty(this.storageKey)){
+            this.storage = JSON.parse(localStorage.getItem(this.storageKey))
+        }
     }
 
     addValue(key, value) {
