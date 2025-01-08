@@ -72,7 +72,7 @@ class PlayerLeft extends Player {
 
     hasHitBall(ballX, ballY, ballRadius) {
         return ballX < this.width * 2 + ballRadius &&
-            ball.x > this.width + ballRadius &&
+            ballX > this.width + ballRadius &&
             this.in(ballY);
     }
 
