@@ -1,189 +1,500 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .buttonDrink {
-            background-color: #9370DB;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            width: 200px;
-        }
-
-        .buttonDish {
-            background-color: #7B68EE;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            width: 200px;
-        }
-    </style>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <table>
-        <tr>
-            <td>
-                <div>
-                    <button id="addDrinkBtn" class="buttonDrink" type="button">Ввод информации о напитке</button>
-                </div>
-                <div>
-                    <button id="getDrinkBtn" class="buttonDrink" type="button">Получение информации о напитке</button>
-                </div>
-                <div>
-                    <button id="deleteDrinkBtn" class="buttonDrink" type="button">Удаление информации о напитке</button>
-                </div>
-                <div>
-                    <button id="getDrinksBtn" class="buttonDrink" type="button">Перечень всех напитков</button>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <button id="addDishBtn" class="buttonDish" type="button">Ввод информации о блюде</button>
-                </div>
-                <div>
-                    <button id="getDishBtn" class="buttonDish" type="button">Получение информации о блюде</button>
-                </div>
-                <div>
-                    <button id="deleteDishBtn" class="buttonDish" type="button">Удаление информации о блюде</button>
-                </div>
-                <div>
-                    <button id="getDishesBtn" class="buttonDish" type="button">Перечень всех блюд</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div id="wrap">
+        <div id="startMenu">
+            <h1>Ping Pong</h1>
+            <button id="startBtn">Start</button>
+            <button id="controlBtn">About</button>
+        </div>
+        <div id="controlMenu">
+            <h1>How to play</h1>
+            <div id="text">
+                <p>
+                    The game is played to 10 points.
+                </p>
+                <p>
+                    The Left player controls the racket using the <b>Shift</b> and <b>Ctrl</b> keys.
+                </p>
+                <p>
+                    The Right player controls the racket using the <b>PgUp</b> and <b>PgDn</b> keys.
+                </p>
+                <p>
+                    Use the <b>Enter</b> key to pause or resume the game.
+                </p>
+            </div>
+            <button id="okBtn">Ok</button>
+        </div>
+        <div id="pauseMenu">
+            <h1>Pause</h1>
+            <button id="continueBtn">Continue</button>
+            <button id="restartBtn">Restart</button>
+        </div>
+        <div id="gameOverMenu">
+            <h1 id="gameMessage"></h1>
+            <button id="againBtn">Play again</button>
+        </div>
+        <div id="gameplay"></div>
+    </div>
     <script type="module">
-        import { LocalStorageClass } from "./LocalStorage.js";
+        import { Ball } from "./ball.js";
+        import { Canvas } from "./canvas.js";
+        import { PlayerLeft, PlayerRight } from "./player.js";
 
-        let addDrinkBtn = document.getElementById("addDrinkBtn");
-        addDrinkBtn.addEventListener("click", addDrink);
+        //class Canvas {
+        //    #element;
+        //    #context;
 
-        let getDrinkBtn = document.getElementById("getDrinkBtn");
-        getDrinkBtn.addEventListener("click", getDrink);
+        //    constructor() {
+        //        this.#element = document.createElement("canvas");
+        //        this.#context = this.#element.getContext("2d");
+        //        this.#element.width = 0;
+        //        this.#element.height = 0;
+        //        this.resize();
+        //        document.querySelector("#gameplay").appendChild(this.#element);
+        //    }
 
-        let deleteDrinkBtn = document.getElementById("deleteDrinkBtn");
-        deleteDrinkBtn.addEventListener("click", deleteDrink);
+        //    getWidth() {
+        //        return this.#element.width;
+        //    }
 
-        let getDrinksBtn = document.getElementById("getDrinksBtn");
-        getDrinksBtn.addEventListener("click", getDrinks);
+        //    getHeight() {
+        //        return this.#element.height;
+        //    }
 
-        let addDishBtn = document.getElementById("addDishBtn");
-        addDishBtn.addEventListener("click", addDish);
+        //    drawCircle(x, y, r) {
+        //        this.#context.fillStyle = 'white';
+        //        this.#context.beginPath();
+        //        this.#context.arc(x, y, r, 0, Math.PI * 2, true);
+        //        this.#context.fill();
+        //    }
 
-        let getDishBtn = document.getElementById("getDishBtn");
-        getDishBtn.addEventListener("click", getDish);
+        //    drawRoundRect(x, y, width, height) {
+        //        this.#context.fillStyle = 'white';
+        //        this.#context.roundRect(x, y, width, height, 20);
+        //        this.#context.fill();
+        //    }
 
-        let deleteDishBtn = document.getElementById("deleteDishBtn");
-        deleteDishBtn.addEventListener("click", deleteDish);
+        //    drawText(text, x, y) {
+        //        this.#context.fillStyle = 'rgba(255,255,255,0.2)';
+        //        this.#context.font = "200px 'Roboto', Arial";
+        //        this.#context.textAlign = "center";
+        //        this.#context.fillText(text, x, y);
+        //    }
 
-        let getDishesBtn = document.getElementById("getDishesBtn");
-        getDishesBtn.addEventListener("click", getDishes);
+        //    drawLine(startX, startY, endX, endY) {
+        //        this.#context.strokeStyle = 'rgba(255,255,255,0.2)';
+        //        this.#context.beginPath();
+        //        this.#context.moveTo(startX, startY);
+        //        this.#context.lineTo(endX, endY);
+        //        this.#context.stroke();
+        //    }
 
-        let drinkStorage = new LocalStorageClass("drinks");
+        //    resize() {
+        //        this.#element.width = window.innerWidth;
+        //        this.#element.height = window.innerHeight;
+        //    }
 
-        function addDrink() {
-            let name = getInputText("Введите название напитка:");
-            let recipe = getInputText("Введите рецепт напитка:");
-            let isAlcohol = confirm("Это алкогольный напиток?");
-            drinkStorage.addValue(name, { "isAlcohol": isAlcohol, "recipe": recipe });
-        }
+        //    clear() {
+        //        this.#context.clearRect(0, 0, this.#element.width, this.#element.height);
+        //    }
+        //}
 
-        function getDrink() {
-            let name = getInputText("Введите название напитка:");
-            let drink = drinkStorage.getValue(name);
-            if (drink === undefined)
-                alert(`Напиток '${name}' отсуствует.`);
-            else {
-                alert(`Напиток: ${name}
-Алкогольный: ${drink.isAlcohol ? "да" : "нет"}
-Рецепт приготовления: ${drink.recipe}`);
+        //class Ball {
+        //    constructor() {
+        //        this.size = 20;
+        //        this.radius = this.size / 2;
+        //        this.x = 0;
+        //        this.y = 0;
+        //        this.speedX = 8;
+        //        this.speedY = 0;
+        //        this.level = 0;
+        //        this.init();
+        //    }
+
+        //    init() {
+        //        this.level = 1;
+        //        this.updateSpeedYRandomly();
+        //        this.moveToCenter();
+        //    }
+
+        //    updateLevel(value) {
+        //        this.level = value;
+        //    }
+
+        //    moveX() {
+        //        this.x = this.x + this.speedX;
+        //    }
+
+        //    moveY() {
+        //        this.y = this.y + this.speedY;
+        //        if (this.y > window.innerHeight - this.radius) {
+        //            this.revertSpeedY();
+        //            this.y = window.innerHeight - this.radius;
+        //        } else if (this.y < this.radius) {
+        //            this.revertSpeedY();
+        //            this.y = this.radius;
+        //        }
+        //    }
+
+        //    moveToCenter() {
+        //        this.x = window.innerWidth / 2 - this.radius;
+        //        this.y = window.innerHeight / 2 - this.radius;
+        //    }
+
+        //    reset() {
+        //        this.revertSpeedX();
+        //        this.updateSpeedYRandomly();
+        //        this.moveToCenter();
+        //    }
+
+        //    revertSpeedX() {
+        //        this.speedX *= -1;
+        //    }
+
+        //    revertSpeedY() {
+        //        this.speedY *= -1;
+        //    }
+
+        //    updateSpeedY(startY, heigth) {
+        //        if (this.y >= startY && this.y < startY + heigth * .2) {
+        //            this.#setSpeedY(-15);
+        //        }
+        //        else if (this.y >= startY + heigth * .2 && this.y < startY + heigth * .4) {
+        //            this.#setSpeedY(-10);
+        //        }
+        //        else if (this.y >= startY + heigth * .4 && this.y < startY + heigth * .6) {
+        //            this.updateSpeedYRandomly();
+        //        }
+        //        else if (this.y >= startY + heigth * .6 && this.y < startY + heigth * .8) {
+        //            this.#setSpeedY(-10);
+        //        }
+        //        else if (this.y >= startY + heigth * .8 && this.y < startY + heigth) {
+        //            this.#setSpeedY(15);
+        //        }
+        //    }
+
+        //    updateSpeedYRandomly() {
+        //        this.#setSpeedY(this.#getRandomNumber());
+        //    }
+
+        //    #setSpeedY(value) {
+        //        this.speedY = value * (.25 * this.level);
+        //    }
+
+        //    #getRandomNumber() {
+        //        const min = -5;
+        //        const max = 5;
+        //        return Math.random() * (max - min) + min;
+        //    }
+        //}
+
+        //class Player {
+        //    #upDirection = "up";
+        //    #downDirection = "down";
+
+        //    constructor() {
+        //        this.width = 10;
+        //        this.height = 100;
+        //        this.y = 0;
+        //        this.direction = null;
+        //        this.speed = 15;
+        //        this.score = 0;
+        //        this.moveToCenter();
+        //    }
+
+        //    init() {
+        //        this.moveToCenter();
+        //        this.resetScore();
+        //    }
+
+        //    moveToCenter() {
+        //        this.y = window.innerHeight / 2 - this.height / 2;
+        //    }
+
+        //    increaseScore() {
+        //        this.score++;
+        //    }
+
+        //    isWinner(scoreToWin) {
+        //        return this.score === scoreToWin;
+        //    }
+
+        //    cleanDirection() {
+        //        this.direction = null;
+        //    }
+
+        //    upDirection() {
+        //        this.direction = this.#upDirection;
+        //    }
+
+        //    downDirection() {
+        //        this.direction = this.#downDirection;
+        //    }
+
+        //    resetScore() {
+        //        this.score = 0;
+        //    }
+
+        //    resetY() {
+        //        if (this.y + this.height > window.innerHeight) {
+        //            this.y = window.innerHeight - this.height;
+        //        }
+        //    }
+
+        //    move() {
+        //        if (this.direction === this.#upDirection && this.y >= 0) {
+        //            this.y -= this.speed;
+        //        } else if (this.direction === this.#downDirection && this.y < (window.innerHeight - this.height)) {
+        //            this.y += this.speed;
+        //        }
+        //    }
+
+        //    in(y) {
+        //        return y >= this.y && y <= this.y + this.height;
+        //    }
+        //}
+
+        //class PlayerLeft extends Player {
+        //    constructor() {
+        //        super();
+        //        this.x = this.width;
+        //    }
+
+        //    hasHitBall(ballX, ballY, ballRadius) {
+        //        return ballX < this.width * 2 + ballRadius &&
+        //            ball.x > this.width + ballRadius &&
+        //            this.in(ballY);
+        //    }
+
+        //    hasGoal(ballX, ballSize) {
+        //        return ballX <= -ballSize;
+        //    }
+
+        //    reset() {
+        //        this.resetY();
+        //    }
+        //}
+
+        //class PlayerRight extends Player {
+        //    constructor() {
+        //        super();
+        //        this.x = window.innerWidth - this.width - this.width;
+        //    }
+
+        //    hasHitBall(ballX, ballY, ballRadius) {
+        //        return ballX > window.innerWidth - this.width * 2 - ballRadius &&
+        //            ballX < window.innerWidth - this.width &&
+        //            this.in(ballY);
+        //    }
+
+        //    hasGoal(ballX) {
+        //        return ballX > window.innerWidth;
+        //    }
+
+        //    reset() {
+        //        this.x = window.innerWidth - this.width - this.width;
+        //        this.resetY();
+        //    }
+        //}
+
+        let canvas = new Canvas();
+        let playerLeft = new PlayerLeft();
+        let playerRight = new PlayerRight();
+        let ball = new Ball();
+
+        var hitBallAudio = new Audio('hitBall.mp3');
+
+        let startMenu = document.getElementById('startMenu');
+        let controlMenu = document.getElementById('controlMenu');
+        let pauseMenu = document.getElementById('pauseMenu');
+        let gameOverMenu = document.getElementById('gameOverMenu');
+        let gameplay = document.getElementById('gameplay');
+        let startBtn = document.getElementById('startBtn');
+        let controlBtn = document.getElementById('controlBtn');
+        let okBtn = document.getElementById('okBtn');
+        let continueBtn = document.getElementById('continueBtn');
+        let restartBtn = document.getElementById('restartBtn');
+        let againBtn = document.getElementById('againBtn');
+        let gameMessage = document.getElementById('gameMessage');
+
+        const scoreToWin = 10;
+        let gamePaused = false;
+        let gameInProgress = false;
+        let gameInterval = window.setInterval(function () { });
+
+        window.addEventListener('resize', windowResize);
+        startBtn.addEventListener('click', startGame);
+        controlBtn.addEventListener('click', showControlMenu);
+        okBtn.addEventListener('click', acceptRules);
+        continueBtn.addEventListener('click', resumeGame);
+        restartBtn.addEventListener('click', resetGame);
+        againBtn.addEventListener('click', resetGame);
+        document.addEventListener('keydown', keyDown);
+        document.addEventListener('keyup', keyUp);
+
+        startMenu.className = 'active';
+        pauseMenu.className = '';
+        gameplay.className = '';
+        gameOverMenu.className = '';
+        controlMenu.className = '';
+
+        window.onblur = function () {
+            if (gameInProgress) {
+                pauseGame();
             }
         }
 
-        function deleteDrink() {
-            let name = getInputText("Введите название напитка:");
-            if (drinkStorage.deleteValue(name))
-                alert(`Напиток '${name}' удален.`);
-            else
-                alert(`Напиток '${name}' отсуствует.`);
+        function showControlMenu() {
+            startMenu.className = '';
+            controlMenu.className = 'active';
         }
 
-        function getDrinks() {
-            let drinksArray = drinkStorage.getKeys();
-            if (drinksArray.length === 0)
-                alert("Напитков в хранилище нет.");
-            else {
-                let drinks = "";
-                for (let i = 0; i < drinksArray.length; i++) {
-                    drinks += drinksArray[i] + "\n";
+        function acceptRules() {
+            startMenu.className = 'active';
+            controlMenu.className = '';
+        }
+
+        function startGame() {
+            gameInProgress = true;
+            gamePaused = false;
+            gameplay.className = '';
+            startMenu.className = '';
+            gameOverMenu.className = '';
+            pauseMenu.className = '';
+            gameInterval = window.setInterval(function () {
+                move();
+                drawGame();
+            }, 15);
+        }
+
+        function resetGame() {
+            ball.init();
+            playerLeft.init();
+            playerRight.init();
+            startGame();
+        }
+
+        function togglePause() {
+            if (gamePaused) {
+                resumeGame();
+            } else {
+                pauseGame();
+            }
+        }
+
+        function pauseGame() {
+            if (!gamePaused) {
+                gamePaused = true;
+                gameplay.className = '';
+                pauseMenu.className = 'active';
+                clearInterval(gameInterval);
+            }
+        }
+
+        function resumeGame() {
+            if (gamePaused) {
+                gamePaused = false;
+                gameplay.className = '';
+                pauseMenu.className = '';
+                startGame();
+            }
+        }
+
+        function windowResize() {
+            ball.reset();
+            playerRight.reset();
+            playerLeft.reset();
+            canvas.resize();
+            if (gameInProgress) {
+                drawGame();
+            }
+        }
+
+        function keyDown(e) {
+            e.preventDefault();
+            if (gameInProgress) {
+                switch (e.keyCode) {
+                    case 13:
+                        togglePause();
+                        break;
+                    case 16: //shift
+                        playerLeft.upDirection();
+                        break;
+                    case 17: //ctrl
+                        playerLeft.downDirection();
+                        break;
+                    case 38: //pgup
+                        playerRight.upDirection();
+                        break;
+                    case 40: //pgdn
+                        playerRight.downDirection();
+                        break;
                 }
-                alert(drinks);
             }
         }
 
-        let dishStorage = new LocalStorageClass("dishes");
-
-        function addDish() {
-            let name = getInputText("Введите название блюда:");
-            let recipe = getInputText("Введите рецепт блюда:");
-            let isHot = confirm("Это горячее блюдо?");
-            dishStorage.addValue(name, { "isHot": isHot, "recipe": recipe });
+        function keyUp(e) {
+            playerLeft.cleanDirection();
+            playerRight.cleanDirection();
         }
 
-        function getDish() {
-            let name = getInputText("Введите название блюда:");
-            let dish = dishStorage.getValue(name);
-            if (dish === undefined)
-                alert(`Блюдо '${name}' отсуствует.`);
-            else {
-                alert(`Блюдо: ${name}
-Горячее: ${dish.isHot ? "да" : "нет"}
-Рецепт приготовления: ${dish.recipe}`);
+        function gameOver() {
+            gameInProgress = false;
+            clearInterval(gameInterval);
+            gameMessage.textContent = '';
+            if (playerLeft.isWinner(scoreToWin)) {
+                gameMessage.textContent = 'Left Player won!';
             }
-        }
-
-        function getDishes() {
-            let dishesArray = dishStorage.getKeys();
-            if (dishesArray.length === 0)
-                alert("Блюд в хранилище нет.");
-            else {
-                let dishes = "";
-                for (let i = 0; i < dishesArray.length; i++) {
-                    dishes += dishesArray[i] + "\n";
-                }
-                alert(dishes);
+            if (playerRight.isWinner(scoreToWin)) {
+                gameMessage.textContent = 'Right Player won!'
             }
+            gameplay.className = '';
+            gameOverMenu.className = 'active';
         }
 
-        function deleteDish() {
-            let name = getInputText("Введите название блюда:");
-            if (dishStorage.deleteValue(name))
-                alert(`Блюдо '${name}' удалено.`);
-            else
-                alert(`Блюдо '${name}' отсуствует.`);
-        }
-
-        function getInputText(message) {
-            let name = "";
-            do {
-                name = prompt(message);
+        function move() {
+            ball.moveX();
+            if (playerLeft.hasHitBall(ball.x, ball.y, ball.radius) ||
+                playerRight.hasHitBall(ball.x, ball.y, ball.radius)) {
+                hitBallAudio.play();
+                ball.revertSpeedX();
+                ball.updateSpeedY(playerRight.y, playerRight.height);
+            } else if (playerLeft.hasGoal(ball.x, ball.size)) {
+                ball.reset();
+                playerRight.increaseScore();
+                ball.updateLevel(playerRight.score * .5);
+            } else if (playerRight.hasGoal(ball.x)) {
+                ball.reset();
+                playerLeft.increaseScore();
+                ball.updateLevel(playerLeft.score * .5);
             }
-            while (name === null || name.trim().length === 0)
 
-            return name;
+            if (playerLeft.isWinner(scoreToWin) || playerRight.isWinner(scoreToWin)) {
+                gameOver();
+                return;
+            }
+
+            ball.moveY();
+            playerLeft.move();
+            playerRight.move();
         }
 
+        function drawGame() {
+            let canvasWidth = canvas.getWidth();
+            let canvasHeight = canvas.getHeight();
+
+            canvas.clear();
+            canvas.drawCircle(ball.x, ball.y, ball.radius);
+            canvas.drawRoundRect(playerLeft.x, playerLeft.y, playerLeft.width, playerLeft.height);
+            canvas.drawRoundRect(playerRight.x, playerRight.y, playerRight.width, playerRight.height);
+            canvas.drawText(playerLeft.score, canvasWidth * .25, canvasHeight / 2 + 75);
+            canvas.drawText(playerRight.score, canvasWidth * .75, canvasHeight / 2 + 75);
+            canvas.drawLine(canvasWidth / 2, 0, canvasWidth / 2, canvasHeight);
+        }
     </script>
 </body>
 </html>
