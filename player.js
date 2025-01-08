@@ -107,4 +107,4 @@ class PlayerRight extends Player {
     }
 }
 
-export { PlayerLeft, PlayerRight };
+export { PlayerLeft, PlayerRight, Player };
